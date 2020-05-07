@@ -26,6 +26,20 @@ const init = async () => (
   })
 )
 
+const listTasks = async () => (
+  new Promise((resolve, reject) => {
+    const query = new storage.TableQuery()
+      .select(['title'])
+      .where('PartitionKey eq ?', 'task')
+
+    service.queryEntities(table, query, null, (error, result) => {
+      !error ? resolve(result.entries.map((entry) => ({
+        title: entry.title._
+      }))) : reject()
+    })
+  })
+)
+
 module.exports = {
-	addTask,init
+	addTask,listTasks,init
 }
