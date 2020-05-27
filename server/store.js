@@ -1,6 +1,6 @@
 const storage = require('azure-storage')
-var retryOperations = new azure.ExponentialRetryPolicyFilter();
-var service = storage.createTableService().withFilter(retryOperations);
+const retryOperations = new storage.ExponentialRetryPolicyFilter();
+const service = storage.createTableService("epmagazyn1","X1sP8c8rAwSy2Qr3ZpGXan1hGYouZK07SoezghALowOlVbDb9yrZ3q/x9/p8tBUVBARucDPQA1vKqXuPtkw3fQ==").withFilter(retryOperations);
 const table = 'tasks'
 const uuid = require('uuid')
 
@@ -44,5 +44,3 @@ const listTasks = async () => (
 module.exports = {
 	addTask,listTasks,init
 }
-
-var retryOperations = new azure.ExponentialRetryPolicyFilter();
