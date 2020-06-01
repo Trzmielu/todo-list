@@ -32,9 +32,14 @@ const listTasks = async () => {
           description.innerHTML = `<p>${task.description}</p>`
         }
 
+        const actions = document.createElement('td')
+        actions.classList.add('has-text-right')
+        actions.innerHTML = `<button class="button is-small is-primary" id="deleteTask${task.id}" onclick="completeTask('${task.id}');"><span class="icon is-small"><i class="fas fa-check"></i></span></button>`
+
         const row = document.createElement('tr')
         row.appendChild(title)
         row.appendChild(description)
+        row.appendChild(actions)
 
         tasksList.appendChild(row)
       })
@@ -91,5 +96,35 @@ addTaskForm.addEventListener('submit', (event) => {
       })
   }, 1000)
 })
+
+const completeTask = (id) => {
+  tasksListMsg.classList.remove('is-danger')
+  tasksListMsg.classList.add('is-hidden')
+
+  const button = document.querySelector(`#deleteTask${id}`)
+  button.classList.add('is-loading')
+
+  setTimeout(() => {
+    fetch(`/api/tasks?id=${id}`, { method: 'DELETE' })
+      .then((response) => {
+        if (!response.ok) {
+          throw Error(response.statusText)
+        }
+
+        tasksListMsg.textContent = 'Pomyślnie usunięto zadanie.'
+        tasksListMsg.classList.add('is-success')
+
+        listTasks()
+      })
+      .catch(() => {
+        button.classList.remove('is-loading')
+        tasksListMsg.textContent = 'Wystąpił błąd podczas usuwania zadania. Spróbuj ponownie później.'
+        tasksListMsg.classList.add('is-danger')
+      })
+      .finally(() => {
+        tasksListMsg.classList.remove('is-hidden')
+      })
+  }, 1000)
+}
 
 listTasks();
