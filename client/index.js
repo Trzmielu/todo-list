@@ -1,5 +1,6 @@
 const addTaskForm = document.querySelector('#addTaskForm')
 const addTaskTitle = document.querySelector('#addTaskForm #title')
+const addTaskDescription = document.querySelector('#addTaskForm #description')
 const addTaskBtn = document.querySelector('#addTaskBtn')
 const addTaskMsg = document.querySelector('#addTaskMsg')
 const tasksList = document.querySelector('#tasksList')
@@ -22,9 +23,18 @@ const listTasks = async () => {
       response.forEach((task) => {
         const title = document.createElement('td')
         title.innerHTML = `<p>${task.title}</p>`
+        const description = document.createElement('td')
+        
+        if(task.description == null){
+          description.innerHTML ='<p>Brak opisu</p>';
+        }
+        else{
+          description.innerHTML = `<p>${task.description}</p>`
+        }
 
         const row = document.createElement('tr')
         row.appendChild(title)
+        row.appendChild(description)
 
         tasksList.appendChild(row)
       })
@@ -67,6 +77,7 @@ addTaskForm.addEventListener('submit', (event) => {
         addTaskMsg.textContent = 'Pomyślnie dodano zadanie.'
         addTaskMsg.classList.add('is-success')
         addTaskTitle.value = ''
+        addTaskDescription.value = ''
 
         listTasks()
       })
