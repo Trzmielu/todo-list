@@ -127,4 +127,18 @@ const completeTask = (id) => {
   }, 1000)
 }
 
+const refresh = (id) => {
+  const button = document.querySelector('#refreshList')
+  button.classList.add('is-loading')
+   setTimeout(() => {
+    fetch(`/api/tasks}`, { method: 'GET' })
+      .then((response) => {
+        if (!response.ok) {
+          throw Error(response.statusText)
+        }
+        listTasks()
+      })
+    }, 1000)
+}
+
 listTasks();
