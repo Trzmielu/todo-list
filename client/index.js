@@ -25,7 +25,7 @@ const listTasks = async () => {
         title.innerHTML = `<p>${task.title}</p>`
         const description = document.createElement('td')
         
-        if(task.description == null){
+        if(task.description == null || task.description==""){
           description.innerHTML ='<p>Brak opisu</p>';
         }
         else{
