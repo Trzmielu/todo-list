@@ -12,8 +12,10 @@ const addTask = async ({ title, description }) => (
       RowKey: gen.String(uuid.v4()),
       title,description
     }
-
-    service.insertEntity(table, task, (error) => {
+	if (title == null || title == "") {
+        throw Error()
+    }
+    service.insertEntity(table, task, (error) => {       
       !error ? resolve() : reject()
     })
   })
